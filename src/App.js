@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
-import HomePage from './components/HomePage';
-import LoginPage from './components/LoginPage';
-import QuizPage from './components/QuizPage';
-import ResultPage from './components/ResultPage';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import QuizPage from './pages/QuizPage';
+import ResultPage from './pages/ResultPage';
 
 function App() {
   const [user, setUser] = useState(null);
