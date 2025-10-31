@@ -53,6 +53,7 @@ const Toast = ({ message, onClose, action }) => {
 };
 
 const HomePage = ({ user, onLogout }) => {
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isDisabled, setIsDisabled] = useState(false);
@@ -115,7 +116,7 @@ const HomePage = ({ user, onLogout }) => {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch('https://opentdb.com/api_category.php');
+            const response = await fetch(`${API_BASE_URL}/api_category.php`);
             const data = await response.json();
             setCategories(data.trivia_categories || []);
         } catch (error) {
@@ -135,7 +136,7 @@ const HomePage = ({ user, onLogout }) => {
                 difficulty: quizConfig.difficulty
             });
 
-            const response = await fetch(`https://opentdb.com/api.php?${params}`);
+            const response = await fetch(`${API_BASE_URL}/api.php?${params}`);
             const data = await response.json();
 
             if (data.results && data.results.length > 0) {

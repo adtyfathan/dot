@@ -97,24 +97,14 @@ const QuizPage = () => {
             const nextIndex = quizData.currentIndex + 1;
 
             if (nextIndex >= quizData.questions.length) {
-                const finalAnswers = [
-                    ...quizData.answers,
-                    {
-                        question: currentQuestion.question,
-                        selectedAnswer: answer,
-                        correctAnswer: currentQuestion.correct_answer,
-                        isCorrect
-                    }
-                ];
-
                 const results = {
                     category: quizData.category,
                     total: quizData.questions.length,
-                    attempted: quizData.answers.length,
-                    correct: quizData.answers.filter((a) => a.isCorrect).length,
-                    incorrect: quizData.answers.filter((a) => !a.isCorrect).length,
+                    attempted: updatedAnswers.length,
+                    correct: updatedAnswers.filter(a => a.isCorrect).length,
+                    incorrect: updatedAnswers.filter(a => !a.isCorrect).length,
                     questions: progress.questions,
-                    answers: finalAnswers,
+                    answers: updatedAnswers,
                     endTime: Date.now(),
                 };
 
@@ -140,7 +130,7 @@ const QuizPage = () => {
         return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
     }
 
-    const progress = ((quizData.currentIndex + 1) / quizData.questions.length) * 100;
+    const progress = quizData?.timer ? (timeRemaining / quizData.timer) * 100 : 0;
     const minutes = Math.floor(timeRemaining / 60);
     const seconds = timeRemaining % 60;
 

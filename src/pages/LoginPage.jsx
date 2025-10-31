@@ -46,7 +46,7 @@ const LoginPage = ({ onLogin }) => {
             return;
         }
 
-        if (isLogin) {
+        if (isLogin) { // login
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const user = users.find(u => u.email === formData.email && u.password === formData.password);
 
@@ -56,7 +56,7 @@ const LoginPage = ({ onLogin }) => {
             } else {
                 showToast('Invalid email or password', 'error');
             }
-        } else {
+        } else { // register
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const existingUser = users.find(u => u.email === formData.email);
 
@@ -80,92 +80,121 @@ const LoginPage = ({ onLogin }) => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
-            {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+        <div className="min-h-screen flex flex-col lg:flex-row justify-center items-center">
+            <div className="hidden lg:flex lg:w-2/3">
+                <img
+                    src="/images/login.jpg"
+                    alt="Login Illustration"
+                    className="w-full h-screen object-cover"
+                />
+            </div>
 
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8" data-testid="login-card">
-                <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold mb-2" style={{ fontFamily: 'Space Grotesk' }}>
-                        Quiz Master
-                    </h1>
-                    <p className="text-gray-600">
-                        {isLogin ? 'Login to start your quiz journey' : 'Create an account to get started'}
-                    </p>
-                </div>
+            <div className="flex w-full lg:w-1/3 items-center justify-center bg-white p-6 sm:p-10">
+                {toast && (
+                    <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
+                )}
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    {!isLogin && (
+                <div className="w-full max-w-md">
+                    <div className="mb-8">
+                        <div className="flex items-center justify-center gap-4">
+                            <img src="/images/logo.png" alt="logo" className='w-12' />
+                            <h1
+                                className="text-4xl font-bold mb-2"
+                                style={{ fontFamily: 'Space Grotesk' }}
+                            >
+                                Quizis
+                            </h1>
+                        </div>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        {!isLogin && (
+                            <div>
+                                <label
+                                    className="block text-sm font-medium text-gray-700 mb-2 text-left"
+                                    htmlFor="username"
+                                >
+                                    Username
+                                </label>
+                                <input
+                                    id="username"
+                                    name="username"
+                                    type="text"
+                                    placeholder="Enter username"
+                                    value={formData.username}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                    data-testid="username-input"
+                                />
+                            </div>
+                        )}
+
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="username">
-                                Username
+                            <label
+                                className="block text-sm font-medium text-gray-700 mb-2 text-left"
+                                htmlFor="email"
+                            >
+                                Email
                             </label>
                             <input
-                                id="username"
-                                name="username"
-                                type="text"
-                                placeholder="Enter username"
-                                value={formData.username}
+                                id="email"
+                                name="email"
+                                type="email"
+                                placeholder="Enter email"
+                                value={formData.email}
                                 onChange={handleChange}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
-                                data-testid="username-input"
+                                data-testid="email-input"
                             />
                         </div>
-                    )}
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="email">
-                            Email
-                        </label>
-                        <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            placeholder="Enter email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
-                            data-testid="email-input"
-                        />
+                        <div>
+                            <label
+                                className="block text-sm font-medium text-gray-700 mb-2 text-left"
+                                htmlFor="password"
+                            >
+                                Password
+                            </label>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                placeholder="Enter password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                data-testid="password-input"
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="w-full py-3 rounded-lg font-semibold text-white transition-transform hover:scale-105 active:scale-95"
+                            style={{
+                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            }}
+                            data-testid="submit-button"
+                        >
+                            {isLogin ? 'Login' : 'Register'}
+                        </button>
+                    </form>
+
+                    <div className="mt-6 text-center">
+                        <button
+                            type="button"
+                            onClick={() => setIsLogin(!isLogin)}
+                            className="text-purple-600 hover:text-purple-700 font-medium transition"
+                            data-testid="toggle-auth-button"
+                        >
+                            {isLogin
+                                ? "Don't have an account? Register"
+                                : 'Already have an account? Login'}
+                        </button>
                     </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="password">
-                            Password
-                        </label>
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            placeholder="Enter password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
-                            data-testid="password-input"
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="w-full py-3 rounded-lg font-semibold text-white transition-transform hover:scale-105 active:scale-95"
-                        style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
-                        data-testid="submit-button"
-                    >
-                        {isLogin ? 'Login' : 'Register'}
-                    </button>
-                </form>
-
-                <div className="mt-6 text-center">
-                    <button
-                        type="button"
-                        onClick={() => setIsLogin(!isLogin)}
-                        className="text-purple-600 hover:text-purple-700 font-medium transition"
-                        data-testid="toggle-auth-button"
-                    >
-                        {isLogin ? "Don't have an account? Register" : 'Already have an account? Login'}
-                    </button>
                 </div>
             </div>
         </div>
+
     );
 };
 
